@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:ym_flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:ym_flutter_keyboard_visibility/ym_flutter_keyboard_visibility.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
