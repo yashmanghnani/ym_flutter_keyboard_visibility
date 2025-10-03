@@ -1,4 +1,4 @@
-library flutter_keyboard_visibility;
+library ym_flutter_keyboard_visibility;
 
 export 'package:ym_flutter_keyboard_visibility/src/keyboard_visibility_controller.dart';
 export 'package:ym_flutter_keyboard_visibility/src/keyboard_visibility_test_util.dart';
