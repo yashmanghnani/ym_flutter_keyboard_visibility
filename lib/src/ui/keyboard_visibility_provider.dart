@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:ym_flutter_keyboard_visibility/src/keyboard_visibility_controller.dart';
 
@@ -35,10 +36,10 @@ class KeyboardVisibilityProvider extends StatefulWidget {
       controller ?? KeyboardVisibilityController();
 
   const KeyboardVisibilityProvider({
-    Key? key,
+    super.key,
     required this.child,
     this.controller,
-  }) : super(key: key);
+  });
 
   /// Returns `true` if the keyboard is currently visible, `false`
   /// if the keyboard is not currently visible, or `null` if
@@ -51,37 +52,51 @@ class KeyboardVisibilityProvider extends StatefulWidget {
   static bool isKeyboardVisible(BuildContext context) {
     return context
         .dependOnInheritedWidgetOfExactType<
-            _KeyboardVisibilityInheritedWidget>()!
+          _KeyboardVisibilityInheritedWidget
+        >()!
         .isKeyboardVisible;
   }
 
   @override
-  _KeyboardVisibilityProviderState createState() =>
+  State<KeyboardVisibilityProvider> createState() =>
       _KeyboardVisibilityProviderState();
 }
 
 class _KeyboardVisibilityProviderState
     extends State<KeyboardVisibilityProvider> {
-  late StreamSubscription _subscription;
+  StreamSubscription<bool>? _subscription;
   bool _isKeyboardVisible = false;
 
   @override
   void initState() {
     super.initState();
-    _isKeyboardVisible = widget._controller.isVisible;
-    _subscription =
-        widget._controller.onChange.listen(_onKeyboardVisibilityChange);
+    _subscribe(widget._controller);
+  }
+
+  @override
+  void didUpdateWidget(covariant KeyboardVisibilityProvider oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget._controller != widget._controller) {
+      _subscribe(widget._controller);
+    }
+  }
+
+  void _subscribe(KeyboardVisibilityController controller) {
+    _subscription?.cancel();
+    _isKeyboardVisible = controller.isVisible;
+    _subscription = controller.onChange.listen(_onKeyboardVisibilityChange);
   }
 
   void _onKeyboardVisibilityChange(bool isKeyboardVisible) {
-    setState(() {
-      _isKeyboardVisible = isKeyboardVisible;
-    });
+    if (!mounted || _isKeyboardVisible == isKeyboardVisible) {
+      return;
+    }
+    setState(() => _isKeyboardVisible = isKeyboardVisible);
   }
 
   @override
   void dispose() {
-    _subscription.cancel();
+    _subscription?.cancel();
     super.dispose();
   }
 
@@ -97,11 +112,10 @@ class _KeyboardVisibilityProviderState
 /// `InheritedWidget` that rebuilds descendants whenever
 /// `isKeyboardVisible` changes.
 class _KeyboardVisibilityInheritedWidget extends InheritedWidget {
-  _KeyboardVisibilityInheritedWidget({
-    Key? key,
+  const _KeyboardVisibilityInheritedWidget({
     required this.isKeyboardVisible,
-    required Widget child,
-  }) : super(key: key, child: child);
+    required super.child,
+  });
 
   final bool isKeyboardVisible;
 

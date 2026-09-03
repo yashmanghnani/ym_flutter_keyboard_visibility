@@ -1,1 +1,11 @@
-include: package:pedantic/analysis_options.yaml
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # This package intentionally exposes a synchronous visibility getter.
+    avoid_classes_with_only_static_members: false

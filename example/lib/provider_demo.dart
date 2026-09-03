@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:ym_flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:ym_flutter_keyboard_visibility/ym_flutter_keyboard_visibility.dart';
 
 class ProviderDemo extends StatelessWidget {
-  ProviderDemo({Key? key}) : super(key: key);
+  const ProviderDemo({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return KeyboardVisibilityProvider(
-      child: MyDemoPage(),
-    );
+    return KeyboardVisibilityProvider(child: const MyDemoPage());
   }
 }
 
 class MyDemoPage extends StatelessWidget {
+  const MyDemoPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Keyboard Visibility Provider'),
-      ),
+      appBar: AppBar(title: Text('Keyboard Visibility Provider')),
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(24.0),

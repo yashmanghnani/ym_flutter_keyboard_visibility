@@ -11,8 +11,9 @@ import 'flutter_keyboard_visibility_test.mocks.dart';
 @GenerateMocks([KeyboardVisibilityController])
 void main() {
   group('KeyboardVisibilityProvider', () {
-    testWidgets('It reports true when the keyboard is visible',
-        (WidgetTester tester) async {
+    testWidgets('It reports true when the keyboard is visible', (
+      WidgetTester tester,
+    ) async {
       // Pretend that the keyboard is visible.
       var mockController = MockKeyboardVisibilityController();
       when(mockController.onChange)
@@ -28,8 +29,9 @@ void main() {
           controller: mockController,
           child: Builder(
             builder: (BuildContext context) {
-              isKeyboardVisible =
-                  KeyboardVisibilityProvider.isKeyboardVisible(context);
+              isKeyboardVisible = KeyboardVisibilityProvider.isKeyboardVisible(
+                context,
+              );
               return SizedBox();
             },
           ),
@@ -41,8 +43,9 @@ void main() {
       expect(isKeyboardVisible, true);
     });
 
-    testWidgets('It reports false when the keyboard is NOT visible',
-        (WidgetTester tester) async {
+    testWidgets('It reports false when the keyboard is NOT visible', (
+      WidgetTester tester,
+    ) async {
       // Pretend that the keyboard is hidden.
       var mockController = MockKeyboardVisibilityController();
       when(mockController.onChange)
@@ -58,8 +61,9 @@ void main() {
           controller: mockController,
           child: Builder(
             builder: (BuildContext context) {
-              isKeyboardVisible =
-                  KeyboardVisibilityProvider.isKeyboardVisible(context);
+              isKeyboardVisible = KeyboardVisibilityProvider.isKeyboardVisible(
+                context,
+              );
               return SizedBox();
             },
           ),
@@ -71,8 +75,9 @@ void main() {
       expect(isKeyboardVisible, false);
     });
 
-    testWidgets('It rebuilds when the keyboard visibility changes',
-        (WidgetTester tester) async {
+    testWidgets('It rebuilds when the keyboard visibility changes', (
+      WidgetTester tester,
+    ) async {
       // Pretend that the keyboard is visible.
       var mockController = MockKeyboardVisibilityController();
       var streamController = StreamController<bool>();
@@ -88,8 +93,9 @@ void main() {
           controller: mockController,
           child: Builder(
             builder: (BuildContext context) {
-              isKeyboardVisible =
-                  KeyboardVisibilityProvider.isKeyboardVisible(context);
+              isKeyboardVisible = KeyboardVisibilityProvider.isKeyboardVisible(
+                context,
+              );
               return SizedBox();
             },
           ),
@@ -114,8 +120,9 @@ void main() {
   });
 
   group('KeyboardVisibilityBuilder', () {
-    testWidgets('It reports true when the keyboard is visible',
-        (WidgetTester tester) async {
+    testWidgets('It reports true when the keyboard is visible', (
+      WidgetTester tester,
+    ) async {
       // Pretend that the keyboard is visible.
       var mockController = MockKeyboardVisibilityController();
       when(mockController.onChange)
@@ -129,8 +136,8 @@ void main() {
       await tester.pumpWidget(
         KeyboardVisibilityBuilder(
           controller: mockController,
-          builder: (_, _isKeyboardVisible) {
-            isKeyboardVisible = _isKeyboardVisible;
+          builder: (_, isKeyboardVisibleValue) {
+            isKeyboardVisible = isKeyboardVisibleValue;
             return SizedBox();
           },
         ),
@@ -141,8 +148,9 @@ void main() {
       expect(isKeyboardVisible, true);
     });
 
-    testWidgets('It reports false when the keyboard is NOT visible',
-        (WidgetTester tester) async {
+    testWidgets('It reports false when the keyboard is NOT visible', (
+      WidgetTester tester,
+    ) async {
       // Pretend that the keyboard is hidden.
       var mockController = MockKeyboardVisibilityController();
       when(mockController.onChange)
@@ -156,8 +164,8 @@ void main() {
       await tester.pumpWidget(
         KeyboardVisibilityBuilder(
           controller: mockController,
-          builder: (_, _isKeyboardVisible) {
-            isKeyboardVisible = _isKeyboardVisible;
+          builder: (_, isKeyboardVisibleValue) {
+            isKeyboardVisible = isKeyboardVisibleValue;
             return SizedBox();
           },
         ),
@@ -168,8 +176,9 @@ void main() {
       expect(isKeyboardVisible, false);
     });
 
-    testWidgets('It rebuilds when the keyboard visibility changes',
-        (WidgetTester tester) async {
+    testWidgets('It rebuilds when the keyboard visibility changes', (
+      WidgetTester tester,
+    ) async {
       // Pretend that the keyboard is visible.
       var mockController = MockKeyboardVisibilityController();
       var streamController = StreamController<bool>();
@@ -183,8 +192,8 @@ void main() {
       await tester.pumpWidget(
         KeyboardVisibilityBuilder(
           controller: mockController,
-          builder: (_, _isKeyboardVisible) {
-            isKeyboardVisible = _isKeyboardVisible;
+          builder: (_, isKeyboardVisibleValue) {
+            isKeyboardVisible = isKeyboardVisibleValue;
             return SizedBox();
           },
         ),
@@ -216,14 +225,8 @@ void main() {
             child: Material(
               child: Column(
                 children: [
-                  SizedBox(
-                    key: Key('box'),
-                    height: 100,
-                    width: 100,
-                  ),
-                  TextField(
-                    focusNode: focusNode,
-                  ),
+                  SizedBox(key: Key('box'), height: 100, width: 100),
+                  TextField(focusNode: focusNode),
                 ],
               ),
             ),
@@ -240,63 +243,65 @@ void main() {
       expect(focusNode.hasFocus, true);
 
       // Tapping within KeyboardDismissOnTap removes focus
-      await tester.tap(find.byKey(Key('box')));
+      await tester.tapAt(const Offset(50, 50));
       expect(focusNode.hasFocus, false);
     });
   });
 
   group('KeyboardVisibilityTesting', () {
     testWidgets(
-        'setVisibilityForTesting allows overriding of value to true for testing',
-        (WidgetTester tester) async {
-      // Pretend that the keyboard is visible.
-      KeyboardVisibilityTesting.setVisibilityForTesting(true);
+      'setVisibilityForTesting allows overriding of value to true for testing',
+      (WidgetTester tester) async {
+        // Pretend that the keyboard is visible.
+        KeyboardVisibilityTesting.setVisibilityForTesting(true);
 
-      // Build a Widget tree and query KeyboardVisibilityProvider
-      // for the visibility of the keyboard.
-      bool? isKeyboardVisible;
+        // Build a Widget tree and query KeyboardVisibilityProvider
+        // for the visibility of the keyboard.
+        bool? isKeyboardVisible;
 
-      await tester.pumpWidget(
-        KeyboardVisibilityProvider(
-          child: Builder(
-            builder: (BuildContext context) {
-              isKeyboardVisible =
-                  KeyboardVisibilityProvider.isKeyboardVisible(context);
-              return SizedBox();
-            },
+        await tester.pumpWidget(
+          KeyboardVisibilityProvider(
+            child: Builder(
+              builder: (BuildContext context) {
+                isKeyboardVisible =
+                    KeyboardVisibilityProvider.isKeyboardVisible(context);
+                return SizedBox();
+              },
+            ),
           ),
-        ),
-      );
+        );
 
-      // Verify that KeyboardVisibilityProvider reported that the
-      // keyboard is visible.
-      expect(isKeyboardVisible, true);
-    });
+        // Verify that KeyboardVisibilityProvider reported that the
+        // keyboard is visible.
+        expect(isKeyboardVisible, true);
+      },
+    );
     testWidgets(
-        'setVisibilityForTesting allows overriding of value to false for testing',
-        (WidgetTester tester) async {
-      // Pretend that the keyboard is not visible.
-      KeyboardVisibilityTesting.setVisibilityForTesting(false);
+      'setVisibilityForTesting allows overriding of value to false for testing',
+      (WidgetTester tester) async {
+        // Pretend that the keyboard is not visible.
+        KeyboardVisibilityTesting.setVisibilityForTesting(false);
 
-      // Build a Widget tree and query KeyboardVisibilityProvider
-      // for the visibility of the keyboard.
-      bool? isKeyboardVisible;
+        // Build a Widget tree and query KeyboardVisibilityProvider
+        // for the visibility of the keyboard.
+        bool? isKeyboardVisible;
 
-      await tester.pumpWidget(
-        KeyboardVisibilityProvider(
-          child: Builder(
-            builder: (BuildContext context) {
-              isKeyboardVisible =
-                  KeyboardVisibilityProvider.isKeyboardVisible(context);
-              return SizedBox();
-            },
+        await tester.pumpWidget(
+          KeyboardVisibilityProvider(
+            child: Builder(
+              builder: (BuildContext context) {
+                isKeyboardVisible =
+                    KeyboardVisibilityProvider.isKeyboardVisible(context);
+                return SizedBox();
+              },
+            ),
           ),
-        ),
-      );
+        );
 
-      // Verify that KeyboardVisibilityProvider reported that the
-      // keyboard is visible.
-      expect(isKeyboardVisible, false);
-    });
+        // Verify that KeyboardVisibilityProvider reported that the
+        // keyboard is visible.
+        expect(isKeyboardVisible, false);
+      },
+    );
   });
 }

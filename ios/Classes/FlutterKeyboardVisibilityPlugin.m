@@ -1,14 +1,6 @@
-//
-//  KeyboardVisibilityHandler.m
-//  Runner
-//
-//  Created by admin on 07/11/2018.
-//  Copyright © 2018 The Chromium Authors. All rights reserved.
-//
-
 #import "FlutterKeyboardVisibilityPlugin.h"
 
-@interface FlutterKeyboardVisibilityPlugin() <FlutterStreamHandler>
+@interface FlutterKeyboardVisibilityPlugin () <FlutterStreamHandler>
 
 @property (copy, nonatomic) FlutterEventSink flutterEventSink;
 @property (assign, nonatomic) BOOL flutterEventListening;
@@ -19,74 +11,76 @@
 
 @implementation FlutterKeyboardVisibilityPlugin
 
-+(void) registerWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
-    FlutterEventChannel *stream = [FlutterEventChannel eventChannelWithName:@"flutter_keyboard_visibility" binaryMessenger:[registrar messenger]];
++ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
+    FlutterEventChannel *channel = [FlutterEventChannel
+        eventChannelWithName:@"flutter_keyboard_visibility"
+        binaryMessenger:[registrar messenger]];
 
-    FlutterKeyboardVisibilityPlugin *instance = [[FlutterKeyboardVisibilityPlugin alloc] init];
-    [stream setStreamHandler:instance];
+    FlutterKeyboardVisibilityPlugin *instance =
+        [[FlutterKeyboardVisibilityPlugin alloc] init];
+    [channel setStreamHandler:instance];
 }
 
--(instancetype)init {
+- (instancetype)init {
     self = [super init];
+    if (self == nil) {
+        return nil;
+    }
 
     self.isVisible = NO;
 
-    // set up the notifier
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(didShow) name:UIKeyboardDidShowNotification object:nil];
-    [center addObserver:self selector:@selector(willShow) name:UIKeyboardWillShowNotification object:nil];
-	[center addObserver:self selector:@selector(didHide) name:UIKeyboardWillHideNotification object:nil];
+    [center addObserver:self
+               selector:@selector(didShow)
+                   name:UIKeyboardDidShowNotification
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(didHide)
+                   name:UIKeyboardDidHideNotification
+                 object:nil];
 
     return self;
 }
 
-- (void)didShow
-{
-    // if state changed and we have a subscriber, let him know
-    if (!self.isVisible) {
-        self.isVisible = YES;
-        if (self.flutterEventListening) {
-            self.flutterEventSink([NSNumber numberWithInt:1]);
-        }
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)didShow {
+    [self updateVisibility:YES];
+}
+
+- (void)didHide {
+    [self updateVisibility:NO];
+}
+
+- (void)updateVisibility:(BOOL)visible {
+    if (self.isVisible == visible) {
+        return;
+    }
+
+    self.isVisible = visible;
+    if (self.flutterEventListening && self.flutterEventSink != nil) {
+        self.flutterEventSink(@(visible));
     }
 }
 
-- (void)willShow
-{
-    // if state changed and we have a subscriber, let him know
-    if (!self.isVisible) {
-        self.isVisible = YES;
-        if (self.flutterEventListening) {
-            self.flutterEventSink([NSNumber numberWithInt:1]);
-        }
-    }
-}
-
-- (void)didHide
-{
-    // if state changed and we have a subscriber, let him know
-    if (self.isVisible) {
-	    self.isVisible = NO;
-		if (self.flutterEventListening) {
-			self.flutterEventSink([NSNumber numberWithInt:0]);
-		}
-    }
-}
-
--(FlutterError*)onListenWithArguments:(id)arguments eventSink:(FlutterEventSink)events {
+- (FlutterError *)onListenWithArguments:(id)arguments
+                              eventSink:(FlutterEventSink)events {
     self.flutterEventSink = events;
     self.flutterEventListening = YES;
 
-    // if keyboard is visible at startup, let our subscriber know
+    // If the keyboard is visible when the stream starts, report it once.
     if (self.isVisible) {
-        self.flutterEventSink([NSNumber numberWithInt:1]);
+        self.flutterEventSink(@YES);
     }
 
     return nil;
 }
 
--(FlutterError*)onCancelWithArguments:(id)arguments {
+- (FlutterError *)onCancelWithArguments:(id)arguments {
     self.flutterEventListening = NO;
+    self.flutterEventSink = nil;
     return nil;
 }
 

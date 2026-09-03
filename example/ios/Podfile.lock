@@ -1,22 +1,22 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_keyboard_visibility (0.0.1):
+  - ym_flutter_keyboard_visibility (1.1.0):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
+  - ym_flutter_keyboard_visibility (from `.symlinks/plugins/ym_flutter_keyboard_visibility/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  flutter_keyboard_visibility:
-    :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
+  ym_flutter_keyboard_visibility:
+    :path: ".symlinks/plugins/ym_flutter_keyboard_visibility/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
-  flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
+  Flutter: 71a624a5bc0c04062bf19101d501e466baf2fb47
+  ym_flutter_keyboard_visibility: 26a00187d8cc71ca7b6c3a9dedf9a6292dd5e333
 
-PODFILE CHECKSUM: 8e679eca47255a8ca8067c4c67aab20e64cb974d
+PODFILE CHECKSUM: 5e6838852cb965046aea7206d2801f7cad357e2d
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.16.2

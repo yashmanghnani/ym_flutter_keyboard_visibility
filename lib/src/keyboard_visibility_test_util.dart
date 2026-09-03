@@ -12,4 +12,10 @@ class KeyboardVisibilityTesting {
   static void setVisibilityForTesting(bool isKeyboardVisible) {
     KeyboardVisibilityHandler.setVisibilityForTesting(isKeyboardVisible);
   }
+
+  /// Clears the test override and resumes reporting the native value.
+  @visibleForTesting
+  static void clearVisibilityForTesting() {
+    KeyboardVisibilityHandler.clearVisibilityForTesting();
+  }
 }
