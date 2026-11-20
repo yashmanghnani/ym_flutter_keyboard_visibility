@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'ym_flutter_keyboard_visibility'
-  s.version          = '1.1.0'
+  s.version          = '1.1.1'
   s.summary          = 'Observe keyboard visibility changes in Flutter.'
   s.description      = <<-DESC
 Observe soft-keyboard visibility changes from Flutter on iOS.

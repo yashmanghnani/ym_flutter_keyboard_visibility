@@ -1,4 +1,8 @@
 
+## [1.1.1] - 2026-11-20
+
+* Updated Android Gradle Plugin, Gradle, and Kotlin versions for Flutter 3.50.
+
 ## [1.1.0] - 2026-09-03
 
 * Restored native Android and iOS event delivery through a managed platform

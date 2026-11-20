@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 import 'package:ym_flutter_keyboard_visibility/src/keyboard_visibility_handler.dart';
 
 @visibleForTesting

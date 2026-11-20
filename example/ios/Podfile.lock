@@ -1,6 +1,6 @@
 PODS:
   - Flutter (1.0.0)
-  - ym_flutter_keyboard_visibility (1.1.0):
+  - ym_flutter_keyboard_visibility (1.1.1):
     - Flutter
 
 DEPENDENCIES:
@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 71a624a5bc0c04062bf19101d501e466baf2fb47
-  ym_flutter_keyboard_visibility: 26a00187d8cc71ca7b6c3a9dedf9a6292dd5e333
+  ym_flutter_keyboard_visibility: b9dea845d747255b8e1b13f5cb89a9e8d9a4b039
 
 PODFILE CHECKSUM: 5e6838852cb965046aea7206d2801f7cad357e2d
 

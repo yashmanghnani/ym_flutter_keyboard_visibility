@@ -18,7 +18,7 @@ Add the package to `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ym_flutter_keyboard_visibility: ^1.1.0
+  ym_flutter_keyboard_visibility: ^1.1.1
 ```
 
 Then run `flutter pub get`.
@@ -31,7 +31,7 @@ Use `KeyboardVisibilityBuilder` when only part of the widget tree depends on
 visibility:
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:ym_flutter_keyboard_visibility/ym_flutter_keyboard_visibility.dart';
 
 class KeyboardStatus extends StatelessWidget {
